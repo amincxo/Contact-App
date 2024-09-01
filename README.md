@@ -1,7 +1,7 @@
 
 <img title="Frame (11).png" src="https://uploadkon.ir/uploads/c6bf01_24Screenshot-11448-.png">
 
-<h2>این پروژه با نسخه <h1>18.2.0</h1> ری اکت توسعه داده شده</h2>
+<h2>این پروژه با نسخه <h1>18.3.1</h1> ری اکت توسعه داده شده</h2>
 <h2>کتابخانه های مورد استفاده</h2>
 <h2> vite, react, react-dom, react-router-dom ,react-scripts, web-vitals , uuid  </h2>
 
