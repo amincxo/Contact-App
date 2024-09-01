@@ -1,47 +1,69 @@
 import React, { useState } from 'react';
+import { v4 } from 'uuid';
 
 import ContactsList from './ContactsList';
+import input from '../constants/input';
+import styles from './Contacts.module.css';
 
 function Contacts() {
-    const [ contacts , setContacts ] = useState([])
-    const [contact , setContact] = useState({
-        name: "",
-        lastname: "" ,
-        email: "" ,
-        phone:"", 
-    })
+  const [alert, setAlert] = useState('');
+  const [contacts, setContacts] = useState([]);
+  const [contact, setContact] = useState({
+    id: '',
+    name: '',
+    lastName: '',
+    email: '',
+    phone: '',
+  });
 
-    const changeHandler = event=> {
-        const name = event.target.name;
-        const value = event.target.value;
-        
+  const changeHandler = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
 
-        setContact(contact => ({...contact , [name] : [value]}) )
+    setContact((contact) => ({ ...contact, [name]: [value] }));
+  };
+
+  const addHandler = () => {
+    if (!contact.name || !contact.lastName || !contact.email || !contact.phone) {
+      setAlert('Please Enter Valid Data ...');
+      return;
     }
+    setAlert('');
+    const newContact = { ...contact, id: v4() };
+    setContacts((contacts) => [...contacts, newContact]);
+    setContact({
+      name: '',
+      lastName: '',
+      email: '',
+      phone: '',
+    });
+  };
 
-    const addHandler = () => {
-        setContacts( contacts => ([ ...contacts , contact]));
-        setContact({
-            name: "",
-            lastname: "" ,
-            email: "" ,
-            phone:"", 
-        });
-
-    }
+  const deleteHandler = (id) => {
+    const newContacts = contacts.filter((contact) => contact.id !== id);
+    setContacts(newContacts);
+  };
 
   return (
-    <div>
-        <div>
-            <input type="text" name="name" placeholder='Name' value={contact.name}  onChange={changeHandler}/>
-            <input type="text" name="lastname"  placeholder='Last Name' value={contact.lastname} onChange={changeHandler} />
-            <input type="text" name="email"  placeholder='Email' value={contact.email} onChange={changeHandler} />
-            <input type="number" name='phone' placeholder='Phone' value={contact.phone} onChange={changeHandler} />
-            <button onClick={addHandler} >Add Contact</button>
-        </div>
-        <ContactsList contacts={contacts} />
+    <div className={styles.container} >
+      <div className={styles.form} >
+        {input.map((input, index) => (
+          <input
+            key={index}
+            type={input.type}
+            name={input.name}
+            placeholder={input.placeholder}
+            value={contact[input.name]}
+            onChange={changeHandler}
+          />
+        ))}
+
+        <button onClick={addHandler}>Add Contact</button>
+        <div className={styles.alert} > {alert && <p>{alert}</p>} </div>
+      </div >
+      <ContactsList contacts={contacts} deleteHandler={deleteHandler} />
     </div>
-  )
+  );
 }
 
-export default Contacts
+export default Contacts;
